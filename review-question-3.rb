@@ -4,7 +4,7 @@
 
 photo = Photo.new
 user = User.new("Sophie")
-photo.user = user
+user.add_photo(photo)
 photo.user.name
 # => "Sophie"
 user.photos
@@ -20,3 +20,50 @@ photo.comments
 
 Comment.all
 #=> [<comment1>]
+
+
+class User
+
+  attr_accessor :name, :photos
+
+  def initialize(name)
+    @name = name
+    @photos = []
+  end
+
+  def add_photo(photo)
+    self.photos << photo
+    photo.user = self
+  end
+
+end
+
+class Photo
+  attr_accessor :user, :comments
+
+  def initialize
+    @comments = []
+  end
+
+  def make_comment(text)
+    self.comments << Comment.new(text)
+  end
+
+end
+
+
+class Comment
+  attr_accessor :text
+
+  @@all = []
+
+  def initialize(text)
+    @text = text
+    @@all << self
+  end
+
+  def self.all
+    @@all
+  end
+
+end
